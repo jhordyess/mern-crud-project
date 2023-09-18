@@ -1,0 +1,57 @@
+# name: mern-crud-dev
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mern-crud-dev_mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_REPLICA_ID=rs0
+      - MONGO_REPLICA_HOST=mongodb
+    volumes:
+      - type: bind
+        source: ./database/init.sh
+        target: /scripts/init.sh
+      - type: volume
+        source: mongodb-data
+        target: /data/db
+      - type: volume
+        source: mongodb-config
+        target: /data/configdb
+    command: "/scripts/init.sh"
+    networks:
+      - localnet
+
+  backend:
+    image: jhordyess/node:18
+    depends_on:
+      - mongodb
+    container_name: mern-crud-dev_backend
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL
+      - SECRET
+    volumes:
+      - .:/mern-crud-project:cached
+    networks:
+      - localnet
+
+  frontend:
+    image: jhordyess/node:18
+    container_name: mern-crud-dev_frontend
+    volumes:
+      - .:/mern-crud-project:cached
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    networks:
+      - localnet
+
+volumes:
+  mongodb-data:
+  mongodb-config:
+
+
+networks:
+  localnet:
+    driver: bridge

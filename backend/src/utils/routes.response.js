@@ -1,25 +1,20 @@
-const response = {};
+const response = {}
 
-response.normal = ({ statusCode = 200, status = "OK", data = {} }) => {
+response.normal = ({ statusCode = 200, status = 'OK', data = {} }) => {
   return {
     statusCode,
     status,
-    data,
-  };
-};
+    data
+  }
+}
 
-response.throw = ({
-  statusCode = 500,
-  status = "FAILED",
-  message,
-  publicError = true,
-}) => {
+response.throw = ({ statusCode = 500, status = 'FAILED', message, publicError = true }) => {
   return {
     statusCode,
     status,
     message,
-    publicError,
-  };
-};
+    publicError
+  }
+}
 
-export default response;
+export default response

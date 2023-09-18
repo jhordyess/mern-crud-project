@@ -1,13 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
 export default class BaseController {
-  prisma;
+  prisma
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = new PrismaClient()
   }
 
   disconnect = async () => {
-    await this.prisma.$disconnect();
-  };
+    await this.prisma.$disconnect()
+  }
 }

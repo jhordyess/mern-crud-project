@@ -1,44 +1,44 @@
-import BaseRouter from "./base.routes.js";
-import EmployeeCtl from "./../controllers/employee.controller.js";
-import { checkToken } from "./../middleware/Auth.js";
+import BaseRouter from './base.routes.js'
+import EmployeeCtl from './../controllers/employee.controller.js'
+import { checkToken } from '../middleware/auth.js'
 
 export default BaseRouter([
   {
-    method: "GET",
-    path: "/",
+    method: 'GET',
+    path: '/',
     mWare: checkToken,
-    func: new EmployeeCtl().listAllEmployess,
+    func: new EmployeeCtl().listAllEmployees
   },
   {
-    method: "POST",
-    path: "/",
+    method: 'POST',
+    path: '/',
     mWare: checkToken,
-    func: new EmployeeCtl().createEmployee,
+    func: new EmployeeCtl().createEmployee
   },
   {
-    method: "PUT",
-    path: "/update/:id",
+    method: 'PUT',
+    path: '/update/:id',
     mWare: checkToken,
 
-    func: new EmployeeCtl().updateEmployee,
+    func: new EmployeeCtl().updateEmployee
   },
   {
-    method: "DELETE",
-    path: "/drop/:id",
+    method: 'DELETE',
+    path: '/drop/:id',
     mWare: checkToken,
-    func: new EmployeeCtl().dropEmployee,
+    func: new EmployeeCtl().dropEmployee
   },
   {
-    method: "GET",
-    path: "/list/:id",
+    method: 'GET',
+    path: '/list/:id',
     mWare: checkToken,
-    func: new EmployeeCtl().listByUserId,
+    func: new EmployeeCtl().listByUserId
   },
   {
-    method: "GET",
-    path: "/search/:name",
+    method: 'GET',
+    path: '/search/:name',
     mWare: checkToken,
 
-    func: new EmployeeCtl().seachEmployee,
-  },
-]);
+    func: new EmployeeCtl().searchEmployee
+  }
+])

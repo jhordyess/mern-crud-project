@@ -1,0 +1,16 @@
+{
+  "name": "mern-crud_backend",
+  "dockerComposeFile": "../docker-compose.dev.yml",
+  "service": "backend",
+  "shutdownAction": "none",
+  "customizations": {
+    "vscode": {
+      "extensions": ["esbenp.prettier-vscode", "dbaeumer.vscode-eslint", "Prisma.prisma"],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  },
+  "postCreateCommand": "sudo npm i npm -g && yarn && yarn build:prisma",
+  "workspaceFolder": "/mern-crud-project/backend"
+}
