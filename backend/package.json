@@ -28,5 +28,6 @@
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
     "prisma": "^5.2.0"
-  }
+  },
+  "packageManager": "yarn@4.5.0"
 }
