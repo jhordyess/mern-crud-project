@@ -56,7 +56,7 @@ code mern-crud-project
 4. Open the integrated terminal (Ctrl+Shift+`) and run the following command:
 
 ```bash
-docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.devcontainer.yml up -d
 ```
 
 5. Open the command palette (Ctrl+Shift+P) and select the option `Dev Containers: Open folder in Container`.
