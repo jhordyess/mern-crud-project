@@ -1,0 +1,33 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mern-crud-mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_REPLICA_ID=rs0
+      - MONGO_REPLICA_HOST=mongodb
+    volumes:
+      - type: bind
+        source: ./database/init.sh
+        target: /scripts/init.sh
+      - type: volume
+        source: mongodb-data
+        target: /data/db
+      - type: volume
+        source: mongodb-config
+        target: /data/configdb
+    command: "/scripts/init.sh"
+    ports:
+      - "27017:27017"
+    networks:
+      - localnet
+
+volumes:
+  mongodb-data:
+  mongodb-config:
+
+
+networks:
+  localnet:
+    driver: bridge
