@@ -15,18 +15,25 @@
     "lint": "eslint \"src/**/*.js\""
   },
   "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "@apollo/subgraph": "^2.9.1",
     "@prisma/client": "^5.19.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
+    "graphql": "^16.9.0",
+    "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/node": "^22.5.5",
     "eslint": "^8.57.1",
     "prettier": "^3.3.3",
-    "prisma": "^5.19.1"
+    "prisma": "^5.19.1",
+    "typescript": "^5.6.2"
   },
   "packageManager": "yarn@4.5.0"
 }
