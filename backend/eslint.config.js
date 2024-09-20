@@ -9,7 +9,7 @@ export default [
     languageOptions: {
       globals: globals.node
       // ecmaVersion:"latest", // not required as it is the default
-      // sourceType: 'module' // not required as it is the default
+      // sourceType: 'module' // not required?
     }
   },
   pluginJs.configs.recommended,
