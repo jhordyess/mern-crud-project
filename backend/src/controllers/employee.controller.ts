@@ -1,5 +1,6 @@
-import response from './../utils/routes.response.js'
-import BaseController from './base.controller.js'
+import { type Request } from 'express'
+import response from '../utils/routes.response'
+import BaseController from './base.controller'
 
 export default class employeeCtl extends BaseController {
   listAllEmployees = async () => {
@@ -26,7 +27,7 @@ export default class employeeCtl extends BaseController {
     })
   }
 
-  createEmployee = async req => {
+  createEmployee = async (req: Request) => {
     const { lastname, firstname, title, country, userId } = req.body
     if (!(lastname && firstname && title && country && userId))
       throw response.throw({ message: 'Invalid properties' })
@@ -52,7 +53,7 @@ export default class employeeCtl extends BaseController {
     })
   }
 
-  updateEmployee = async req => {
+  updateEmployee = async (req: Request) => {
     const { id } = req.params
     const { lastname, firstname, title, country } = req.body
     if (!(lastname && firstname && title && country && id))
@@ -80,7 +81,7 @@ export default class employeeCtl extends BaseController {
     })
   }
 
-  dropEmployee = async req => {
+  dropEmployee = async (req: Request) => {
     const { id } = req.params
     const employee = await this.prisma.employee.findFirst({
       where: {
@@ -100,7 +101,7 @@ export default class employeeCtl extends BaseController {
     })
   }
 
-  listByUserId = async req => {
+  listByUserId = async (req: Request) => {
     const { id } = req.params
     const employee = await this.prisma.employee.findFirst({
       where: {
@@ -112,7 +113,7 @@ export default class employeeCtl extends BaseController {
     return response.normal({ statusCode: 200, data: { employee } })
   }
 
-  searchEmployee = async req => {
+  searchEmployee = async (req: Request) => {
     const name = String(req.params.name)
     const employees = await this.prisma.employee.findMany({
       where: {

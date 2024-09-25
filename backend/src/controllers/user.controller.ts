@@ -1,15 +1,20 @@
-import BaseController from './base.controller.js'
-import response from './../utils/routes.response.js'
+import { type Request } from 'express'
+
+import BaseController from './base.controller'
+import response from '../utils/routes.response'
 
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import process from 'process'
+import process from 'node:process'
+
+const secret = process.env.SECRET || null
 
 export default class userCtrl extends BaseController {
-  register = async req => {
+  register = async (req: Request) => {
     const { username, email, password } = req.body
 
     if (!(username && email && password)) throw response.throw({ message: `Invalid properties` })
+    if (secret === null) throw response.throw({ message: "Can't create user!" })
 
     const emailExists = await this.prisma.user.count({
       where: { email: email }
@@ -27,7 +32,7 @@ export default class userCtrl extends BaseController {
     })
     await this.disconnect()
 
-    const token = jwt.sign(newUser.id, process.env.SECRET)
+    const token = jwt.sign(newUser.id, secret)
 
     if (typeof newUser.id === 'undefined') throw response.throw({ message: "Can't create user!" })
     return response.normal({
@@ -39,7 +44,7 @@ export default class userCtrl extends BaseController {
     })
   }
 
-  login = async req => {
+  login = async (req: Request) => {
     const { email, password } = req.body
 
     if (!(email && password)) throw response.throw({ message: `Invalid properties` })
@@ -52,7 +57,9 @@ export default class userCtrl extends BaseController {
     const passwordMatch = await bcryptjs.compare(password, user.password)
     if (!passwordMatch) throw response.throw({ message: "Password don't match" })
 
-    const token = jwt.sign(user.id, process.env.SECRET)
+    if (secret === null) throw response.throw({ message: "Can't create token!" })
+    const token = jwt.sign(user.id, secret)
+
     return response.normal({
       statusCode: 201,
       data: {

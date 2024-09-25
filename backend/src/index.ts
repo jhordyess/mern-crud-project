@@ -4,8 +4,8 @@ import morgan from 'morgan'
 import cors from 'cors'
 import process from 'process'
 
-import userRouter from './routes/user.routes.js'
-import employeeRouter from './routes/employee.routes.js'
+import userRouter from './routes/user.routes'
+import employeeRouter from './routes/employee.routes'
 
 dotenv.config()
 const app = express()
