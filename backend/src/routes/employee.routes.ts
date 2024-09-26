@@ -1,6 +1,6 @@
-import BaseRouter from './base.routes.js'
-import EmployeeCtl from './../controllers/employee.controller.js'
-import { checkToken } from '../middleware/auth.js'
+import BaseRouter from './base.routes'
+import EmployeeCtl from '../controllers/employee.controller'
+import { checkToken } from '../middleware/auth'
 
 export default BaseRouter([
   {
