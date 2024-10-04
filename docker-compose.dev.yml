@@ -1,7 +1,7 @@
 services:
   mongodb:
     image: mongo:6.0
-    container_name: mern-crud-mongo
+    container_name: mern-crud-dev_mongodb
     environment:
       - MONGO_INITDB_ROOT_USERNAME
       - MONGO_INITDB_ROOT_PASSWORD
@@ -18,10 +18,10 @@ services:
         source: mongodb-config
         target: /data/configdb
     command: "/scripts/init.sh"
-    ports:
-      - "27017:27017"
     networks:
       - localnet
+    ports:
+      - "27017:27017"
 
 volumes:
   mongodb-data:
