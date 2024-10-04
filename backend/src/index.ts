@@ -20,5 +20,5 @@ app.use('/', userRouter)
 app.use('/employee', employeeRouter)
 
 app.listen(port, () => {
-  console.log('Server initialized')
+  console.info('Server initialized, listening on port:', port)
 })
