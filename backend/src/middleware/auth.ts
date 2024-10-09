@@ -7,7 +7,7 @@ import type { Request, Response, NextFunction } from 'express'
 
 const secret = process.env.SECRET || null
 
-export const checkToken = async (req: Request, res: Response, next: NextFunction) => {
+export const checkToken = async (req: Request, _: Response, next: NextFunction) => {
   if (!req.headers.authorization)
     throw response.throw({ statusCode: 401, message: `Access token needed 1` })
 
@@ -15,8 +15,15 @@ export const checkToken = async (req: Request, res: Response, next: NextFunction
 
   if (!token) throw response.throw({ statusCode: 401, message: `Access token needed 2` })
 
-  if (secret === null) throw response.throw({ message: "Can't create user!" })
+  if (!secret) throw response.throw({ message: "Can't create user!" })
+
   const id = jwt.verify(token, secret)
+  if (typeof id !== 'string')
+    throw response.throw({
+      statusCode: 401,
+      message: `Access token needed 3`
+    })
+
   const bc = new BaseController()
   const user = await bc.prisma.user.findFirst({
     where: {
@@ -29,6 +36,5 @@ export const checkToken = async (req: Request, res: Response, next: NextFunction
       statusCode: 401,
       message: `Access token needed 2`
     })
-  req.user_id = id
   next()
 }
