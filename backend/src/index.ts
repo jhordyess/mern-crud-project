@@ -9,6 +9,7 @@ import employeeRouter from './routes/employee.routes'
 
 import { expressMiddleware } from '@apollo/server/express4'
 import { server } from './apolloServer'
+import { PrismaClient } from '@prisma/client'
 
 dotenv.config()
 const app = express()
@@ -21,7 +22,14 @@ app.use(cors({ origin: '*' }))
 
 app.use('/', userRouter)
 app.use('/employee', employeeRouter)
-app.use('/graphql', expressMiddleware(server))
+app.use(
+  '/graphql',
+  expressMiddleware(server, {
+    context: async () => ({
+      prisma: new PrismaClient()
+    })
+  })
+)
 
 app.listen(port, () => {
   console.info('Server initialized, listening on port:', port)

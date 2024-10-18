@@ -1,12 +1,10 @@
-import { PrismaClient } from '@prisma/client'
 // import { IResolvers } from 'graphql-tools'
+import { Resolvers } from '@/types'
 import response from '@/utils/routes.response'
 
-const prisma = new PrismaClient()
-
-const employeeResolvers = {
+const employeeResolvers: Resolvers = {
   Query: {
-    getEmployee: async (_, { id }) => {
+    getEmployee: async (_, { id }, { prisma }) => {
       const employee = await prisma.employee.findFirst({
         where: { id },
         select: {
@@ -30,7 +28,7 @@ const employeeResolvers = {
     }
   },
   Mutation: {
-    createEmployee: async (_, { input }) => {
+    createEmployee: async (_, { input }, { prisma }) => {
       const { lastname, firstname, title, country, userId } = input
       if (!(lastname && firstname && title && country && userId))
         throw response.throw({ message: 'Invalid properties' })
@@ -46,7 +44,7 @@ const employeeResolvers = {
 
       return response.normal({ statusCode: 201, data: { employee, message: 'Employee created' } })
     },
-    updateEmployee: async (_, { id, input }) => {
+    updateEmployee: async (_, { id, input }, { prisma }) => {
       const { lastname, firstname, title, country } = input
       if (!(lastname && firstname && title && country && id))
         throw response.throw({ message: 'Invalid properties' })
@@ -64,7 +62,7 @@ const employeeResolvers = {
         data: { employee: uEmployee, message: 'Employee updated' }
       })
     },
-    deleteEmployee: async (_, { id }) => {
+    deleteEmployee: async (_, { id }, { prisma }) => {
       const employee = await prisma.employee.findFirst({ where: { id } })
       if (!employee) throw response.throw({ message: 'Employee not found!', statusCode: 404 })
 

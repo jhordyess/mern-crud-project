@@ -1,14 +1,13 @@
-import { PrismaClient } from '@prisma/client'
 import bcryptjs from 'bcryptjs'
 import response from '@/utils/routes.response'
 import { env } from 'node:process'
+import { Resolvers } from '@/types'
 
-const prisma = new PrismaClient()
 const secret = env.SECRET || null
 
-const userResolvers = {
+const userResolvers: Resolvers = {
   Mutation: {
-    register: async (_, { input }) => {
+    register: async (_, { input }, { prisma }) => {
       const { username, email, password } = input
 
       if (!(username && email && password)) throw response.throw({ message: `Invalid properties` })
@@ -40,7 +39,7 @@ const userResolvers = {
       })
     },
 
-    login: async (_, { input }) => {
+    login: async (_, { input }, { prisma }) => {
       const { email, password } = input
 
       if (!(email && password)) throw response.throw({ message: `Invalid properties` })
