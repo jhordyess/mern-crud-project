@@ -12,7 +12,8 @@
     "start": "tsx src/index.ts",
     "build:prisma": "prisma generate && prisma db push",
     "format": "prettier --write \"src/**/*.js\"",
-    "lint": "eslint \"src/**/*.js\""
+    "lint": "eslint \"src/**/*.js\"",
+    "ts-check": "tsc --noEmit"
   },
   "dependencies": {
     "@apollo/server": "^4.11.0",
