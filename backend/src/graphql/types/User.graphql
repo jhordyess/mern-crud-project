@@ -1,28 +1,44 @@
+scalar UUID
+scalar Datetime
+
+enum Role {
+  ADMIN
+  USER
+}
+
 type User {
-  id: ID!
+  id: UUID!
   username: String!
   email: String!
   password: String!
-  employee: Employee
+  role: Role!
+  active: Boolean!
+  createdAt: Datetime!
+}
+
+type Query {
+  getUser(at: String!): User!
+  getUsers: [User!]
+}
+
+type Mutation {
+  createUser(input: CreateUserInput): User!
+  login(input: LoginInput): Token!
+}
+
+type Token {
+  token: String!
 }
 
 input CreateUserInput {
   username: String!
+  password: String!
+  email: String!
+  active: Boolean!
+  role: Role!
+}
+
+input LoginInput {
   email: String!
   password: String!
-}
-
-input UpdateUserInput {
-  username: String
-  email: String
-  password: String
-}
-
-type Query {
-  getUser(id: ID!): User
-}
-
-type Mutation {
-  createUser(input: CreateUserInput!): User
-  updateUser(id: ID!, input: UpdateUserInput!): User
 }

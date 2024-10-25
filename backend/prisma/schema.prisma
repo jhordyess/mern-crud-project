@@ -8,39 +8,16 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  username String    @unique
-  email    String    @unique
-  password String
-  employee Employee?
-}
-
-model Employee {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  lastname  String
-  firstname String
-  title     String
-  country   String
-  userId    String   @unique @db.ObjectId
-  user      User     @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid()) @map("_id") @db.ObjectId
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  active    Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Date
-  // managerId String?                 @db.ObjectId
-  // manager   Manager?                @relation(fields: [managerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  // managerEP ManagerEmployeeProfile?
 }
 
-// model ManagerEmployeeProfile {
-//   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-//   employeeId String   @unique @db.ObjectId
-//   employee   Employee @relation(fields: [employeeId], references: [id])
-//   managerId  String   @unique @db.ObjectId
-//   manager    Manager  @relation(fields: [managerId], references: [id])
-// }
-
-// model Manager {
-//   id              String                  @id @default(auto()) @map("_id") @db.ObjectId
-//   employeeProfile ManagerEmployeeProfile?
-//   active          Boolean                 @default(true)
-//   createdAt       DateTime                @default(now()) @db.Date
-//   Employees       Employee[]
-// }
+enum Role {
+  USER
+  ADMIN
+}

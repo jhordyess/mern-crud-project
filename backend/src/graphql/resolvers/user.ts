@@ -1,66 +1,92 @@
+import jwt from 'jsonwebtoken'
 import bcryptjs from 'bcryptjs'
-import response from '@/utils/routes.response'
 import { env } from 'node:process'
 import { Resolvers } from '@/types'
 
 const secret = env.SECRET || null
 
 const userResolvers: Resolvers = {
-  Mutation: {
-    register: async (_, { input }, { prisma }) => {
-      const { username, email, password } = input
+  Query: {
+    getUser: async (_, { at }, { prisma }) => {
+      if (secret === null) throw new Error(`Can't authenticate user!`)
 
-      if (!(username && email && password)) throw response.throw({ message: `Invalid properties` })
-      if (secret === null) throw response.throw({ message: "Can't create user!" })
+      const id = jwt.verify(at, secret)
+      if (typeof id !== 'string') throw new Error(`Access token needed`)
+
+      const user = await prisma.user.findFirst({
+        where: { id }
+      })
+      if (!user) throw new Error(`No user found`)
+
+      return {
+        ...user,
+        password: ''
+      }
+    },
+    getUsers: async (_, __, { prisma }) => {
+      const users = await prisma.user.findMany()
+
+      return users.map(user => ({
+        ...user,
+        password: ''
+      }))
+    }
+  },
+  Mutation: {
+    createUser: async (_, { input }, { prisma }) => {
+      const { username, email, password, role } = input
 
       const emailExists = await prisma.user.count({
-        where: { email: email }
+        where: { email }
       })
-      if (emailExists) throw response.throw({ message: `The email: ${email} already exists` })
 
-      const _password = await bcryptjs.hash(password, 10)
+      if (emailExists) throw new Error(`The email: ${email} already exists`)
+
+      const usernameExists = await prisma.user.count({
+        where: { username }
+      })
+
+      if (usernameExists) throw new Error(`The username: ${username} already exists`)
+
+      const hashedPassword = await bcryptjs.hash(password, 10)
 
       const newUser = await prisma.user.create({
         data: {
           username,
           email,
-          password: _password
+          password: hashedPassword,
+          role
         }
       })
-      await prisma.$disconnect()
 
-      if (typeof newUser.id === 'undefined') throw response.throw({ message: "Can't create user!" })
-      return response.normal({
-        statusCode: 201,
-        data: {
-          user: { ...newUser, password: null },
-          message: 'User created'
-        }
-      })
+      if (typeof newUser.id === 'undefined') throw new Error(`Can't create user`)
+      return {
+        ...newUser,
+        password: ''
+      }
     },
 
     login: async (_, { input }, { prisma }) => {
+      if (secret === null) throw new Error("Can't authenticate user!")
+
       const { email, password } = input
 
-      if (!(email && password)) throw response.throw({ message: `Invalid properties` })
-
       const user = await prisma.user.findFirst({
-        where: { email: email }
+        where: { email }
       })
-      if (!user) throw response.throw({ message: `The email: ${email} not exists` })
+      if (!user) throw new Error('Invalid Login')
 
       const passwordMatch = await bcryptjs.compare(password, user.password)
-      if (!passwordMatch) throw response.throw({ message: "Password don't match" })
+      if (!passwordMatch) throw new Error('Password does not match')
 
-      if (secret === null) throw response.throw({ message: "Can't create token!" })
+      const isActive = user.active
+      if (!isActive) throw new Error('Your account is not activated yet')
 
-      return response.normal({
-        statusCode: 201,
-        data: {
-          user: { ...user, password: null },
-          message: 'Login successful'
-        }
-      })
+      const token = jwt.sign(user.id, secret)
+
+      return {
+        token
+      }
     }
   }
 }
