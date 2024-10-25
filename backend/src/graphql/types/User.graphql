@@ -34,7 +34,6 @@ input CreateUserInput {
   username: String!
   password: String!
   email: String!
-  active: Boolean!
   role: Role!
 }
 
