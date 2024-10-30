@@ -7,4 +7,5 @@ export type Resolvers = GraphQLResolverMap<Context>
 
 export type Context = {
   prisma: import('@prisma/client').PrismaClient
+  secret: string | null
 }

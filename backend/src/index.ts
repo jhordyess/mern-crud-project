@@ -1,4 +1,6 @@
 import dotenv from 'dotenv'
+dotenv.config()
+
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
@@ -6,9 +8,8 @@ import process from 'process'
 
 import { expressMiddleware } from '@apollo/server/express4'
 import { server } from './apolloServer'
-import { PrismaClient } from '@prisma/client'
+import { createContext } from './context'
 
-dotenv.config()
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -20,9 +21,7 @@ app.use(cors({ origin: '*' }))
 app.use(
   '/graphql',
   expressMiddleware(server, {
-    context: async () => ({
-      prisma: new PrismaClient()
-    })
+    context: createContext
   })
 )
 
