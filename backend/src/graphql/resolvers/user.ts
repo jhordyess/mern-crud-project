@@ -1,13 +1,10 @@
 import jwt from 'jsonwebtoken'
 import bcryptjs from 'bcryptjs'
-import { env } from 'node:process'
 import { Resolvers } from '@/types'
-
-const secret = env.SECRET || null
 
 const userResolvers: Resolvers = {
   Query: {
-    getUser: async (_, { at }, { prisma }) => {
+    getUser: async (_, { at }, { prisma, secret }) => {
       if (secret === null) throw new Error(`Can't authenticate user!`)
 
       const id = jwt.verify(at, secret)
@@ -66,7 +63,7 @@ const userResolvers: Resolvers = {
       }
     },
 
-    login: async (_, { input }, { prisma }) => {
+    login: async (_, { input }, { prisma, secret }) => {
       if (secret === null) throw new Error("Can't authenticate user!")
 
       const { email, password } = input
