@@ -8,4 +8,13 @@ const secret = env.SECRET || null
 export const createContext = async (): Promise<Context> => ({
   prisma,
   secret
+  // prismaHealthCheck: async () => {
+  //   try {
+  //     await prisma.$connect()
+  //     await prisma.$disconnect()
+  //     return true
+  //   } catch {
+  //     return false
+  //   }
+  // }
 })
