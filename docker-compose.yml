@@ -1,0 +1,71 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mern_mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_REPLICA_ID=rs0
+      - MONGO_REPLICA_HOST=mongodb
+    volumes:
+      - type: bind
+        source: ./database/init.sh
+        target: /scripts/init.sh
+      - type: volume
+        source: mongodb-data
+        target: /data/db
+      - type: volume
+        source: mongodb-config
+        target: /data/configdb
+    command: "/scripts/init.sh"
+    networks:
+      - localnet
+
+  backend:
+    depends_on:
+      - mongodb
+    container_name: mern_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - DATABASE_URL
+        - SECRET
+    networks:
+      - localnet
+
+  frontend:
+    depends_on:
+      - backend
+    container_name: mern_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_GRAPHQL_URL
+    networks:
+      - localnet
+
+  proxy:
+    depends_on:
+      - frontend
+      - backend
+      - mongodb
+    image: nginx:alpine
+    container_name: mern_proxy
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - localnet
+
+volumes:
+  mongodb-data:
+  mongodb-config:
+
+
+networks:
+  localnet:
+    driver: bridge
