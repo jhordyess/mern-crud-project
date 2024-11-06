@@ -1,29 +1,24 @@
-# MERN CRUD Project
+# MERN Project with GraphQL and Prisma
 
-CRUD Project using MERN stack, manage employees and it's login user.
+Simple MERN Project using GraphQL and Prisma.
 
 ## Description
 
-This project is a CRUD application using the MERN stack (MongoDB, Express, React and Node.js). It's a simple application to manage employees and it's login user.
-
-The backend is a REST API that uses [Prisma](https://www.prisma.io/) as ORM to connect to a [MongoDB](https://www.mongodb.com/) database.
-
-The frontend is a React application using [TypeScript](https://www.typescriptlang.org/) and [Vite](https://vitejs.dev/) as build tool.
+This project is application using the MERN stack (MongoDB, Express, React and Node.js) with GraphQL and Prisma. It's a simple application to manage users, with login.
 
 The project is containerized using Docker and Docker Compose, for frontend, backend and database.
-
-Also I've created a [public collection](https://postman.com/jhordyess/workspace/mern-crud-project/documentation/20955361-9d0c8233-2917-4bc1-8aca-01a83f65ee26) for this project in Postman, that you can use to test the API. Note that you need to have the backend running in order to use it.
 
 ### Technologies Used
 
 #### Backend
 
-- JS libraries: [Express](http://expressjs.com/), [Prisma](https://www.prisma.io/)
+- JS libraries: [Express](http://expressjs.com/), [Prisma](https://www.prisma.io/), [GraphQL](https://graphql.org/), [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
 - Server environment: [Node.js](https://nodejs.org/en/)
+- Programming Language: [TypeScript](https://www.typescriptlang.org/)
 
 #### Frontend
 
-- JS libraries: [React](https://reactjs.org/)
+- JS libraries: [React](https://reactjs.org/), [Apollo Client](https://www.apollographql.com/docs/react/)
 - Programming Language: [TypeScript](https://www.typescriptlang.org/)
 - Build tool: [Vite](https://vitejs.dev/)
 
@@ -31,9 +26,9 @@ Also I've created a [public collection](https://postman.com/jhordyess/workspace/
 
 - Document database: [MongoDB](https://www.mongodb.com/)
 - Containerization: [Docker](https://www.docker.com/)
-- Dev Environment: [VSCode](https://code.visualstudio.com/) with [dev containers](https://code.visualstudio.com/docs/remote/containers) in [Zorin OS](https://zorinos.com/)
+- Dev Environment: [VSCode](https://code.visualstudio.com/) with [dev containers](https://code.visualstudio.com/docs/remote/containers).
 
-## How to use for development
+## How to use for development with Dev Containers
 
 You can use the VSCode dev containers to run the project in a containerized environment.
 
@@ -73,10 +68,27 @@ yarn dev
 
 9. Open the browser and visit <http://localhost:5173/> and lets code!
 
+## How to use for production
+
+To run the project in production mode, remember to create the `.env` file in the root folder by copying the example from the [`.env.example`](./.env.example) file.
+
+Then, run the following command:
+
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+To stop or remove the containers, use the following commands:
+
+```bash
+docker compose -f docker-compose.prod.yml down
+```
+
+Take note that this production configuration is just for testing purposes, and maybe need some changes to be used in a real production environment.
+
 ## To-Do
 
 - Add seed for DB
-- Prepare for production
 - Add more to-do's 😅
 
 ## Contribution
