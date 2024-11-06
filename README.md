@@ -75,7 +75,6 @@ yarn dev
 
 ## To-Do
 
-- Develop frontend
 - Add seed for DB
 - Prepare for production
 - Add more to-do's 😅

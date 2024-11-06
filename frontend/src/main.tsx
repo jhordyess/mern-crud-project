@@ -1,10 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { MyApolloProvider } from './provider/Apollo.tsx'
 import './index.css'
+import { RouterMain } from './provider/Router.tsx'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <MyApolloProvider>
+      <RouterMain />
+    </MyApolloProvider>
+  </StrictMode>
 )
