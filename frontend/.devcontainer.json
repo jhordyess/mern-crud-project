@@ -1,6 +1,6 @@
 {
   "name": "mern-crud_frontend",
-  "dockerComposeFile": "../docker-compose.dev.yml",
+  "dockerComposeFile": "../docker-compose.devcontainer.yml",
   "service": "frontend",
   "shutdownAction": "none",
   "customizations": {
